@@ -5,5 +5,7 @@ package com.pedronalbert.lolcena.views;
  */
 
 public interface HomeView {
-    void disableSearchButton ();
+    void showLoadingDialog ();
+
+    void hideLoadingDialog ();
 }

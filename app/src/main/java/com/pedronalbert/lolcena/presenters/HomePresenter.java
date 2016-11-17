@@ -7,13 +7,13 @@ import com.pedronalbert.lolcena.views.HomeView;
  */
 
 public class HomePresenter {
-    private HomeView mHomeView;
+    private HomeView mainView;
 
     public HomePresenter(HomeView homeView) {
-        this.mHomeView = homeView;
+        this.mainView = homeView;
     }
 
     public void searchSummoner (String summonerName, String region) {
-
+        mainView.showLoadingDialog();
     }
 }

@@ -16,6 +16,10 @@
     </string>
     <string name="search">Buscar</string>
     <string name="summoner_name">Nombre de Invocador</string>
+    <string name="loading_information">Cargando información</string>
+    <string name="please_wait">Por favor espere</string>
+
+    <string name="summoner_name_required">Ingrese un nombre de invocador</string>
 
     <string-array name="regions_abbr_array">
         <item>LAN</item>

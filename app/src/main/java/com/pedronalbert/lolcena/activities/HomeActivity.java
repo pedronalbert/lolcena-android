@@ -2,6 +2,7 @@ package com.pedronalbert.lolcena.activities;
 
 import android.content.res.Configuration;
 import android.os.Debug;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,15 +18,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pedronalbert.lolcena.R;
 import com.pedronalbert.lolcena.presenters.HomePresenter;
 import com.pedronalbert.lolcena.views.HomeView;
+
+import org.w3c.dom.Text;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
     private HomePresenter mPresenter;
     private EditText mSummonerNameET;
     private Button mSearchButton;
     private Spinner mRegionsSpinner;
+    private MaterialDialog mLoadingDialog;
+    private TextInputLayout mSummonerNameTIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         mSummonerNameET = (EditText) findViewById(R.id.summonerNameET);
         mSearchButton = (Button) findViewById(R.id.searchButton);
         mRegionsSpinner = (Spinner) findViewById(R.id.regionsSP);
+        mSummonerNameTIL = (TextInputLayout) findViewById(R.id.summonerNameTIL);
+        mLoadingDialog = new MaterialDialog.Builder(this)
+                .cancelable(false)
+                .title(R.string.loading_information)
+                .content(R.string.please_wait)
+                .progress(true, 0)
+                .build();
+
 
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +73,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
-    public void disableSearchButton() {
-        //TODO: Disable search button
+    public void showLoadingDialog () {
+        mLoadingDialog.show();
+    }
+
+    @Override
+    public void hideLoadingDialog () {
+        mLoadingDialog.dismiss();
     }
 
     private void setRegionsAdepter () {
@@ -73,7 +92,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         String summonerName = mSummonerNameET.getText().toString();
         String regionSelected = mRegionsSpinner.getSelectedItem().toString().toLowerCase();
 
-        mPresenter.searchSummoner(summonerName, regionSelected);
+        if (summonerName.isEmpty()) {
+            mSummonerNameTIL.setError(getString(R.string.summoner_name_required));
+        } else {
+            mSummonerNameTIL.setError(null);
+            mPresenter.searchSummoner(summonerName, regionSelected);
+        }
+
     }
 
 }
