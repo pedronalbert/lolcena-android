@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     private Spinner mRegionsSpinner;
     private MaterialDialog mLoadingDialog;
     private TextInputLayout mSummonerNameTIL;
+    private RadioButton mSummonerSearchRB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         mSearchButton = (Button) findViewById(R.id.searchButton);
         mRegionsSpinner = (Spinner) findViewById(R.id.regionsSP);
         mSummonerNameTIL = (TextInputLayout) findViewById(R.id.summonerNameTIL);
+        mSummonerSearchRB = (RadioButton) findViewById(R.id.summonerSearchRB);
+        
         mLoadingDialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(R.string.loading_information)
@@ -68,7 +72,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 return false;
             }
         });
-
+        
         setRegionsAdepter();
     }
 
@@ -99,6 +103,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
             mPresenter.searchSummoner(summonerName, regionSelected);
         }
 
+    }
+
+    private String getSearchMode () {
+        if (mSummonerSearchRB.isChecked()) {
+            return "SUMMONER";
+        } else {
+            return "GAME";
+        }
     }
 
 }

@@ -31,7 +31,7 @@
                 android:layout_height="200dp"
                 app:srcCompat="@drawable/lolporo"
                 android:id="@+id/homeImage"
-                android:layout_marginBottom="50dp"/>
+                android:layout_marginBottom="16dp"/>
 
 
             <LinearLayout
@@ -66,6 +66,27 @@
                 </Spinner>
             </LinearLayout>
 
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/gameSearchRB"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/game_search" />
+
+                <RadioButton
+                    android:id="@+id/summonerSearchRB"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/summoner_search" />
+            </RadioGroup>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,10 +95,5 @@
                 android:theme="@style/BlueButton" />
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </ScrollView>
     </RelativeLayout>
 </ScrollView>
