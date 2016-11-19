@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pedronalbert.lolcena.R;
+import com.pedronalbert.lolcena.api.models.summoner.SummonerData;
 import com.pedronalbert.lolcena.presenters.HomePresenter;
 import com.pedronalbert.lolcena.views.HomeView;
 
@@ -93,7 +94,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     private void searchSummoner () {
-        String summonerName = mSummonerNameET.getText().toString();
+        String summonerName = mSummonerNameET.getText().toString().trim();
         String regionSelected = mRegionsSpinner.getSelectedItem().toString().toLowerCase();
 
         if (summonerName.isEmpty()) {
@@ -111,6 +112,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         } else {
             return "GAME";
         }
+    }
+    
+    public void showError (String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    
+    public void goToSummonerProfile (SummonerData summonerData) {
+        Toast.makeText(this, "Ir al perfil de invocador", Toast.LENGTH_SHORT).show();
     }
 
 }
