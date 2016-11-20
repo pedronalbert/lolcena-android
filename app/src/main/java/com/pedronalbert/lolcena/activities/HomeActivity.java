@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pedronalbert.lolcena.R;
-import com.pedronalbert.lolcena.api.models.summoner.SummonerData;
+import com.pedronalbert.lolcena.api.models.SummonerData;
 import com.pedronalbert.lolcena.presenters.HomePresenter;
 import com.pedronalbert.lolcena.views.HomeView;
 

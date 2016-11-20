@@ -54,7 +54,8 @@
                         android:inputType="text"
                         android:id="@+id/summonerNameET"
                         android:hint="@string/summoner_name"
-                        android:imeOptions="actionSearch" />
+                        android:imeOptions="actionSearch"
+                        android:text="armaghyon"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Spinner

@@ -1,6 +1,6 @@
 package com.pedronalbert.lolcena.api;
 
-import com.pedronalbert.lolcena.api.models.summoner.SummonerData;
+import com.pedronalbert.lolcena.api.models.SummonerData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

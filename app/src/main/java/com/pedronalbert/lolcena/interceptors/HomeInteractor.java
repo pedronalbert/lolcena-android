@@ -3,8 +3,13 @@ package com.pedronalbert.lolcena.interceptors;
 import android.util.Log;
 
 import com.pedronalbert.lolcena.api.CenaApiService;
-import com.pedronalbert.lolcena.api.models.summoner.SummonerData;
+import com.pedronalbert.lolcena.api.models.SummonerData;
 import com.pedronalbert.lolcena.presenters.HomePresenter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,18 +32,21 @@ public class HomeInteractor {
                     @Override
                     public void onResponse(Call<SummonerData> call, Response<SummonerData> response) {
                         if (response.code() == 200) {
+                            Log.d("request", "user found " + response.body().name);
                             presenter.onSearchSummonerSuccess(response.body());
                         } else if (response.code() == 404 || response.code() == 500) {
-                            if (response.body() == null) {
-
-                                presenter.onSearchFail("Esta nulo");
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                presenter.onSearchFail(jsonObject.getString("message"));
+                            } catch (Exception e) {
+                                presenter.onSearchFail("Error al obtener los datos");
                             }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<SummonerData> call, Throwable t) {
-                        Log.e("RETROFIT", t.getMessage());
+                        Log.e("ERROR", t.toString());
                         presenter.onSearchFail("Error al conectar con el servidor");
                     }
                 });

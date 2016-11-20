@@ -1,17 +1,17 @@
-package com.pedronalbert.lolcena.api.models.summoner;
+package com.pedronalbert.lolcena.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
         "id",
         "name",
         "profileIconId",
         "summonerLevel",
-        "region",
-        "message"
+        "region"
 })
 public class SummonerData {
 
@@ -25,7 +25,5 @@ public class SummonerData {
     public Integer summonerLevel;
     @JsonProperty("region")
     public String region;
-    @JsonProperty("message")
-    public String message;
 
 }

@@ -2,7 +2,7 @@ package com.pedronalbert.lolcena.presenters;
 
 import android.util.Log;
 
-import com.pedronalbert.lolcena.api.models.summoner.SummonerData;
+import com.pedronalbert.lolcena.api.models.SummonerData;
 import com.pedronalbert.lolcena.interceptors.HomeInteractor;
 import com.pedronalbert.lolcena.views.HomeView;
 
