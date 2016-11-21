@@ -1,15 +1,13 @@
 package com.pedronalbert.lolcena.activities;
 
-import android.content.res.Configuration;
-import android.os.Debug;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,31 +23,34 @@ import com.pedronalbert.lolcena.api.models.SummonerData;
 import com.pedronalbert.lolcena.presenters.HomePresenter;
 import com.pedronalbert.lolcena.views.HomeView;
 
-import org.w3c.dom.Text;
-
 public class HomeActivity extends AppCompatActivity implements HomeView {
-    private HomePresenter mPresenter;
-    private EditText mSummonerNameET;
-    private Button mSearchButton;
-    private Spinner mRegionsSpinner;
-    private MaterialDialog mLoadingDialog;
-    private TextInputLayout mSummonerNameTIL;
-    private RadioButton mSummonerSearchRB;
+    private HomePresenter presenter;
+    private EditText summonerNameET;
+    private Button searchButton;
+    private Spinner regionsSpinner;
+    private MaterialDialog loadingDialog;
+    private TextInputLayout summonerNameTIL;
+    private RadioButton summonerSearchRB;
+    private Snackbar snackbar;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mPresenter = new HomePresenter(this);
+        this.presenter = new HomePresenter(this);
 
-        mSummonerNameET = (EditText) findViewById(R.id.summonerNameET);
-        mSearchButton = (Button) findViewById(R.id.searchButton);
-        mRegionsSpinner = (Spinner) findViewById(R.id.regionsSP);
-        mSummonerNameTIL = (TextInputLayout) findViewById(R.id.summonerNameTIL);
-        mSummonerSearchRB = (RadioButton) findViewById(R.id.summonerSearchRB);
-        
-        mLoadingDialog = new MaterialDialog.Builder(this)
+        /*-- Widgets ---*/
+        this.summonerNameET = (EditText) findViewById(R.id.summonerNameET);
+        this.searchButton = (Button) findViewById(R.id.searchButton);
+        this.regionsSpinner = (Spinner) findViewById(R.id.regionsSP);
+        this.summonerNameTIL = (TextInputLayout) findViewById(R.id.summonerNameTIL);
+        this.summonerSearchRB = (RadioButton) findViewById(R.id.summonerSearchRB);
+        this.coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        setRegionsAdepter();
+
+        this.loadingDialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(R.string.loading_information)
                 .content(R.string.please_wait)
@@ -57,14 +58,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 .build();
 
 
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
+        this.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 searchSummoner();
             }
         });
 
-        mSummonerNameET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        this.summonerNameET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_SEARCH)
@@ -73,41 +74,43 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 return false;
             }
         });
-        
-        setRegionsAdepter();
+
     }
 
     @Override
     public void showLoadingDialog () {
-        mLoadingDialog.show();
+        this.loadingDialog.show();
     }
 
     @Override
     public void hideLoadingDialog () {
-        mLoadingDialog.dismiss();
+        this.loadingDialog.dismiss();
     }
 
     private void setRegionsAdepter () {
         ArrayAdapter<CharSequence> regionsAdapter = ArrayAdapter.createFromResource(this, R.array.regions_abbr_array, android.R.layout.simple_spinner_dropdown_item);
         regionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mRegionsSpinner.setAdapter(regionsAdapter);
+        this.regionsSpinner.setAdapter(regionsAdapter);
     }
 
     private void searchSummoner () {
-        String summonerName = mSummonerNameET.getText().toString().trim();
-        String regionSelected = mRegionsSpinner.getSelectedItem().toString().toLowerCase();
+        String summonerName = this.summonerNameET.getText().toString().trim();
+        String regionSelected = this.regionsSpinner.getSelectedItem().toString().toLowerCase();
 
         if (summonerName.isEmpty()) {
-            mSummonerNameTIL.setError(getString(R.string.summoner_name_required));
+            this.summonerNameTIL.setError(getString(R.string.summoner_name_required));
         } else {
-            mSummonerNameTIL.setError(null);
-            mPresenter.searchSummoner(summonerName, regionSelected);
+            this.summonerNameTIL.setError(null);
+
+            if (this.getSearchMode() == "SUMMONER") {
+                this.presenter.searchSummoner(summonerName, regionSelected);
+            }
         }
 
     }
 
     private String getSearchMode () {
-        if (mSummonerSearchRB.isChecked()) {
+        if (this.summonerSearchRB.isChecked()) {
             return "SUMMONER";
         } else {
             return "GAME";
@@ -115,11 +118,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
     
     public void showError (String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        this.snackbar.make(this.coordinatorLayout, message, Snackbar.LENGTH_LONG)
+                .show();
     }
     
     public void goToSummonerProfile (SummonerData summonerData) {
-        Toast.makeText(this, "Ir al perfil de invocador", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, SummonerProfileActivity.class);
+        intent.putExtra("summonerData", summonerData);
+        startActivity(intent);
     }
 
 }

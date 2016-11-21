@@ -2,6 +2,7 @@ package com.pedronalbert.lolcena.presenters;
 
 import android.util.Log;
 
+import com.pedronalbert.lolcena.activities.HomeActivity;
 import com.pedronalbert.lolcena.api.models.SummonerData;
 import com.pedronalbert.lolcena.interceptors.HomeInteractor;
 import com.pedronalbert.lolcena.views.HomeView;
@@ -14,9 +15,9 @@ public class HomePresenter {
     private HomeView mainView;
     private HomeInteractor interactor;
 
-    public HomePresenter(HomeView homeView) {
+    public HomePresenter(HomeActivity homeView) {
         this.mainView = homeView;
-        this.interactor = new HomeInteractor(this);
+        this.interactor = new HomeInteractor(homeView, this);
     }
 
     public void searchSummoner (String summonerName, String region) {
